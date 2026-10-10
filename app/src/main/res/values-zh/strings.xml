@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">NightScreen</string>
+
+    <string name="language">語言</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+
+    <string name="ok">確定</string>
+    <string name="cancel">取消</string>
+    <string name="app_icon_cd">應用圖示</string>
+
+    <string name="enable_filter">啟用濾鏡</string>
+    <string name="brightness">亮度</string>
+    <string name="blue_light_filter">藍光濾鏡</string>
+    <string name="temperature">色溫</string>
+    <string name="cool">冷色</string>
+    <string name="warm">暖色</string>
+    <string name="auto_schedule">自動排程</string>
+    <string name="start">開始</string>
+    <string name="end">結束</string>
+
+    <string name="notification_filter_running">屏幕濾鏡運行中</string>
+    <string name="notification_tap_to_close">點擊此處關閉濾鏡</string>
+    <string name="notification_close_filter">關閉濾鏡</string>
+    <string name="notification_channel_name">屏幕濾鏡服務</string>
+    <string name="notification_channel_desc">屏幕濾鏡控制</string>
+</resources>

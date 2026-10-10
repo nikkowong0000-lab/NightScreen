@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">NightScreen</string>
+
+    <string name="language">Language</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="app_icon_cd">App Icon</string>
+
+    <string name="enable_filter">Enable Filter</string>
+    <string name="brightness">Brightness</string>
+    <string name="blue_light_filter">Blue Light Filter</string>
+    <string name="temperature">Temperature</string>
+    <string name="cool">Cool</string>
+    <string name="warm">Warm</string>
+    <string name="auto_schedule">Auto-Schedule</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+
+    <string name="notification_filter_running">Screen filter running</string>
+    <string name="notification_tap_to_close">Tap here to turn off the filter</string>
+    <string name="notification_close_filter">Turn off filter</string>
+    <string name="notification_channel_name">Screen Filter Service</string>
+    <string name="notification_channel_desc">Controls for the screen filter</string>
 </resources>

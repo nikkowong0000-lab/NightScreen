@@ -505,11 +505,15 @@ class ScreenFilterService : Service() {
         )
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("屏幕滤镜运行中")
-            .setContentText("点击此处关闭滤镜")
+            .setContentTitle(getString(R.string.notification_filter_running))
+            .setContentText(getString(R.string.notification_tap_to_close))
             .setSmallIcon(R.drawable.screenlight_app_icon)
             .setContentIntent(pendingIntent)
-            .addAction(android.R.drawable.ic_menu_close_clear_cancel, "关闭滤镜", stopPendingIntent)
+            .addAction(
+                android.R.drawable.ic_menu_close_clear_cancel,
+                getString(R.string.notification_close_filter),
+                stopPendingIntent
+            )
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
@@ -526,10 +530,10 @@ class ScreenFilterService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
-                "Screen Filter Service",
+                getString(R.string.notification_channel_name),
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Controls for the screen filter"
+                description = getString(R.string.notification_channel_desc)
                 setShowBadge(false)
             }
             val manager = getSystemService(NotificationManager::class.java)

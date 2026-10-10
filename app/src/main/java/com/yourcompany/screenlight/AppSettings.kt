@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 
 // 1. 将 DataStore 实例移到顶层，方便全局访问
@@ -24,4 +25,6 @@ object AppSettings {
     val START_MINUTE_KEY = intPreferencesKey("start_minute")
     val END_HOUR_KEY = intPreferencesKey("end_hour")
     val END_MINUTE_KEY = intPreferencesKey("end_minute")
+
+    val LANGUAGE_KEY = stringPreferencesKey("app_language")
 }

@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -56,6 +57,10 @@ import kotlin.math.sqrt
 import java.util.Arrays
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.wrap(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
@@ -200,10 +205,10 @@ fun MainScreen() {
                             ScheduleReceiver.scheduleNextAlarm(context, true)
                         }
                     }
-                }) { Text("OK") }
+                }) { Text(stringResource(R.string.ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showStartTimePicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showStartTimePicker = false }) { Text(stringResource(R.string.cancel)) }
             }
         ) {
             TimePicker(state = timePickerState)
@@ -232,10 +237,10 @@ fun MainScreen() {
                             ScheduleReceiver.scheduleNextAlarm(context, false)
                         }
                     }
-                }) { Text("OK") }
+                }) { Text(stringResource(R.string.ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showEndTimePicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showEndTimePicker = false }) { Text(stringResource(R.string.cancel)) }
             }
         ) {
             TimePicker(state = timePickerState)
@@ -358,10 +363,13 @@ fun MainScreen() {
         }
     }
 
+    val currentLanguage = remember { LocaleHelper.getLanguage(context) }
+    val activity = context as? ComponentActivity
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("NightScreen", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)) },
+                title = { Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -389,13 +397,54 @@ fun MainScreen() {
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.screenlight_app_icon),
-                            contentDescription = "App Icon",
+                            contentDescription = stringResource(R.string.app_icon_cd),
                             modifier = Modifier.padding(16.dp)
                         )
                     }
                 } else {
                     Spacer(modifier = Modifier.height(8.dp))
                 }
+
+                // Language
+                Text(stringResource(R.string.language), style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    FilterChip(
+                        selected = currentLanguage == LocaleHelper.LANG_EN,
+                        onClick = {
+                            if (currentLanguage != LocaleHelper.LANG_EN) {
+                                LocaleHelper.setLanguage(context, LocaleHelper.LANG_EN)
+                                scope.launch {
+                                    context.dataStore.edit {
+                                        it[AppSettings.LANGUAGE_KEY] = LocaleHelper.LANG_EN
+                                    }
+                                }
+                                activity?.recreate()
+                            }
+                        },
+                        label = { Text(stringResource(R.string.language_english)) }
+                    )
+                    FilterChip(
+                        selected = currentLanguage == LocaleHelper.LANG_ZH,
+                        onClick = {
+                            if (currentLanguage != LocaleHelper.LANG_ZH) {
+                                LocaleHelper.setLanguage(context, LocaleHelper.LANG_ZH)
+                                scope.launch {
+                                    context.dataStore.edit {
+                                        it[AppSettings.LANGUAGE_KEY] = LocaleHelper.LANG_ZH
+                                    }
+                                }
+                                activity?.recreate()
+                            }
+                        },
+                        label = { Text(stringResource(R.string.language_chinese)) }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // Main Control Card
                 ElevatedCard(
@@ -416,7 +465,7 @@ fun MainScreen() {
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
-                                Text("Enable Filter", style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(R.string.enable_filter), style = MaterialTheme.typography.titleMedium)
                             }
                             Switch(
                                 checked = isServiceRunning,
@@ -447,7 +496,7 @@ fun MainScreen() {
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("Brightness", style = MaterialTheme.typography.bodyLarge)
+                            Text(stringResource(R.string.brightness), style = MaterialTheme.typography.bodyLarge)
                             Text(
                                 "${(displayBrightness * 100).toInt()}%",
                                 style = MaterialTheme.typography.labelLarge,
@@ -519,7 +568,7 @@ fun MainScreen() {
                                     tint = MaterialTheme.colorScheme.secondary
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
-                                Text("Blue Light Filter", style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(R.string.blue_light_filter), style = MaterialTheme.typography.titleMedium)
                             }
                             Switch(
                                 checked = isBlueLightEnabled,
@@ -547,7 +596,7 @@ fun MainScreen() {
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("Temperature", style = MaterialTheme.typography.bodyLarge)
+                                    Text(stringResource(R.string.temperature), style = MaterialTheme.typography.bodyLarge)
                                     Text(
                                         "${(warmthPosition * 100).toInt()}%",
                                         style = MaterialTheme.typography.labelLarge,
@@ -578,12 +627,12 @@ fun MainScreen() {
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        "Cool",
+                                        stringResource(R.string.cool),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        "Warm",
+                                        stringResource(R.string.warm),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -614,7 +663,7 @@ fun MainScreen() {
                                     tint = MaterialTheme.colorScheme.tertiary
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
-                                Text("Auto-Schedule", style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(R.string.auto_schedule), style = MaterialTheme.typography.titleMedium)
                             }
                             Switch(
                                 checked = isScheduleEnabled,
@@ -671,7 +720,7 @@ fun MainScreen() {
                                             .padding(12.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text("Start", style = MaterialTheme.typography.labelMedium)
+                                        Text(stringResource(R.string.start), style = MaterialTheme.typography.labelMedium)
                                         Text(
                                             text = String.format(
                                                 "%02d:%02d",
@@ -695,7 +744,7 @@ fun MainScreen() {
                                             .padding(12.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text("End", style = MaterialTheme.typography.labelMedium)
+                                        Text(stringResource(R.string.end), style = MaterialTheme.typography.labelMedium)
                                         Text(
                                             text = String.format(
                                                 "%02d:%02d",

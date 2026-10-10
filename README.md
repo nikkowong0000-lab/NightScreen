@@ -11,6 +11,7 @@ Dims or tints the screen with a system overlay, supports scheduling, Quick Setti
 - Schedule on/off
 - Quick Settings tile
 - AdMob banner (real ad unit IDs in source)
+- **Language:** English (default) / 中文 — toggle near the top of the main settings screen
 
 ## Permissions
 
